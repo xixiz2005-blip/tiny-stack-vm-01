@@ -20,6 +20,9 @@ const OP = new Map([
   [0x40, [0, 1, 1]], [0x41, [0, 2, 0]], [0x50, [0, 1, 0]], [0x51, [0, 1, 0]], [0x52, [0, 0, 1]], [0x53, [0, 1, 0]],
 ]);
 
+const OPT = new Array(256);
+for (const [k, v] of OP) OPT[k] = v;
+
 const enc = new TextEncoder();
 
 /** Run one program on its input: the bytes it wrote and its exit code. */
@@ -37,7 +40,7 @@ function run(p, inp) {
     if (steps === 1000000) return fin(10);
     if (pc < 0 || pc >= n) return fin(9);
     const op = p[pc];
-    const info = OP.get(op);
+    const info = OPT[op];
     if (info === undefined) return fin(5);
     const imm = info[0], pops = info[1], pushes = info[2];
     if (pc + imm >= n) return fin(9);
